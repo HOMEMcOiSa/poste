@@ -8,9 +8,12 @@ from django.views.generic import MonthArchiveView
 from .models import Post
 from .views import PostDetailView
 from .views import PostDateDetailView
+from .feeds import LatestEntries
 
 
 urlpatterns = patterns('',
+    url(r'^feed/$', LatestEntries(), name='last_feeds'),
+
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/$',
         DayArchiveView.as_view(queryset=Post.objects.all().select_subclasses(), date_field='pub_date', month_format='%m'),
         name='poste_post_archive_day'
@@ -39,5 +42,5 @@ urlpatterns = patterns('',
             queryset=Post.objects.all().select_subclasses(),
             date_field='pub_date'),
         name='poste_post_list'
-    )
+    ),
 )
